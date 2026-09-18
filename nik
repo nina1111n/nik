@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>ნიკას საჩუქარი 🎁</title>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(135deg, #fff1a8, #ffd1e8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.container {
+  text-align: center;
+  padding: 20px;
+  position: relative;
+  z-index: 5;
+}
+
+h1 {
+  font-size: 30px;
+  color: #333;
+  margin-bottom: 12px;
+}
+
+.subtitle {
+  font-size: 21px;
+  color: #555;
+  margin-bottom: 35px;
+}
+
+.gifts {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.gift {
+  width: 105px;
+  height: 105px;
+  border: none;
+  border-radius: 22px;
+  background: white;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.18);
+  font-size: 58px;
+  cursor: pointer;
+  transition: 0.25s;
+}
+
+.gift:hover {
+  transform: scale(1.12) rotate(-5deg);
+}
+
+.gift:active {
+  transform: scale(0.9);
+}
+
+.message {
+  display: none;
+  margin-top: 25px;
+  font-size: 32px;
+  font-weight: bold;
+  animation: pop 0.5s ease;
+}
+
+.message small {
+  display: block;
+  margin-top: 12px;
+  font-size: 20px;
+  font-weight: normal;
+}
+
+@keyframes pop {
+  0% {
+    transform: scale(0);
+  }
+  70% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* ეკრანზე ჩამოცვენილი ემოჯები */
+
+.falling {
+  position: fixed;
+  top: -70px;
+  pointer-events: none;
+  z-index: 10;
+  animation: fall linear forwards;
+}
+
+@keyframes fall {
+  to {
+    transform:
+      translateY(115vh)
+      rotate(720deg);
+    opacity: 0;
+  }
+}
+
+/* ყველის აფეთქება */
+
+.explosion {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  font-size: 80px;
+  z-index: 20;
+  pointer-events: none;
+  animation: explode 1s ease-out forwards;
+}
+
+@keyframes explode {
+  0% {
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 1;
+  }
+
+  60% {
+    transform: translate(-50%, -50%) scale(2);
+    opacity: 1;
+  }
+
+  100% {
+    transform: translate(-50%, -50%) scale(4);
+    opacity: 0;
+  }
+}
+
+.shake {
+  animation: shake 0.5s;
+}
+
+@keyframes shake {
+  0% { transform: translate(0); }
+  20% { transform: translate(-10px, 5px); }
+  40% { transform: translate(10px, -5px); }
+  60% { transform: translate(-8px, -5px); }
+  80% { transform: translate(8px, 5px); }
+  100% { transform: translate(0); }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container" id="main">
+
+  <h1>ნიკა, გინდა გაიგო დღეს დედაშენმა რა გიყიდა? 🤔</h1>
+
+  <div class="subtitle">
+    იპოვე შენი საჩუქარი 🎁🤓
+  </div>
+
+  <div class="gifts">
+
+    <button class="gift" onclick="openGift(this, 1)">
+      🎁
+    </button>
+
+    <button class="gift" onclick="openGift(this, 2)">
+      🎁
+    </button>
+
+    <button class="gift" onclick="openGift(this, 3)">
+      🎁
+    </button>
+
+  </div>
+
+  <div class="message" id="message"></div>
+
+</div>
+
+
+<script>
+
+let clicks = 0;
+
+function openGift(button, number) {
+
+  clicks++;
+
+  /* პირველი ორი ყუთი */
+
+  if (clicks === 1) {
+
+    button.innerHTML = "🧦";
+
+    showMessage(
+      "არა ნიკა 😂",
+      "აქ მხოლოდ წინდა დაგხვდა 🧦"
+    );
+
+  }
+
+  else if (clicks === 2) {
+
+    button.innerHTML = "🥔";
+
+    showMessage(
+      "უიი, ისევ ვერ იპოვე 😂",
+      "აქ კარტოფილია 🥔😭"
+    );
+
+  }
+
+  /* მესამე დაჭერა */
+
+  else if (clicks === 3) {
+
+    document.querySelector(".gifts").style.display = "none";
+
+    document.querySelector("h1").style.display = "none";
+
+    document.querySelector(".subtitle").style.display = "none";
+
+    document.getElementById("message").style.display = "block";
+
+    document.getElementById("message").innerHTML =
+      "ქარხნული ყველი 🧀🎉🎉" +
+      "<small>გილოცავ ნიკა, ეს არის შენი საჩუქარი 🥳🧀😂</small>";
+
+    /* ეკრანის შეზანზარება */
+
+    document.body.classList.add("shake");
+
+    setTimeout(() => {
+      document.body.classList.remove("shake");
+    }, 500);
+
+    /* ყველის აფეთქება */
+
+    createExplosion();
+
+    /* ემოჯების წვიმა */
+
+    for (let i = 0; i < 130; i++) {
+
+      setTimeout(() => {
+        createFallingEmoji();
+      }, i * 25);
+
+    }
+
+  }
+
+}
+
+
+/* ტექსტის ჩვენება */
+
+function showMessage(title, text) {
+
+  const message = document.getElementById("message");
+
+  message.style.display = "block";
+
+  message.innerHTML =
+    title +
+    "<small>" +
+    text +
+    "<br><br>კიდევ სცადე 😎👇" +
+    "</small>";
+
+}
+
+
+/* დიდი ყველის აფეთქება */
+
+function createExplosion() {
+
+  const explosion = document.createElement("div");
+
+  explosion.className = "explosion";
+
+  explosion.innerText = "🧀";
+
+  document.body.appendChild(explosion);
+
+  setTimeout(() => {
+    explosion.remove();
+  }, 1000);
+
+}
+
+
+/* ემოჯების წვიმა */
+
+function createFallingEmoji() {
+
+  const emoji = document.createElement("div");
+
+  emoji.className = "falling";
+
+  const emojis = [
+    "🧀",
+    "🥳",
+    "🎉",
+    "🧀",
+    "🥳",
+    "🧀",
+    "🎁",
+    "😂"
+  ];
+
+  emoji.innerText =
+    emojis[Math.floor(Math.random() * emojis.length)];
+
+  emoji.style.left =
+    Math.random() * 100 + "vw";
+
+  emoji.style.fontSize =
+    (25 + Math.random() * 45) + "px";
+
+  emoji.style.animationDuration =
+    (2 + Math.random() * 4) + "s";
+
+  document.body.appendChild(emoji);
+
+  setTimeout(() => {
+    emoji.remove();
+  }, 6500);
+
+}
+
+</script>
+
+</body>
+</html>
